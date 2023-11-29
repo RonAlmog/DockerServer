@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  app:
+    container_name: next-test
+    image: registry.gitlab.com/ronalmog/realio:latest
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    networks:
+      - default

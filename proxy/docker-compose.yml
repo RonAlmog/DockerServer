@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  port:
+    container_name: port
+    image: "portainer/portainer-ce:latest"
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
+    networks:
+      - default
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+  proxy:
+    image: "jc21/nginx-proxy-manager:latest"
+    container_name: proxy
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - proxy_data:/data
+      - proxy_letsencrypt:/etc/letsencrypt
+
+volumes:
+  portainer_data:
+  proxy_data:
+  proxy_letsencrypt:

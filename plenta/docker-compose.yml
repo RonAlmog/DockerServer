@@ -1,0 +1,64 @@
+ersion: "3.7"
+services:
+  backend:
+    image: registry.gitlab.com/ronalmog/plenta-api-23:latest
+    container_name: plenta-api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+      - DATABASE_CONNECTION=${DATABASE_CONNECTION}
+    ports:
+      - 3001:3000
+      - 27017:27017
+    networks:
+      - plenta_net
+
+  plenta-web:
+    image: registry.gitlab.com/ronalmog/plenta-web-23:latest
+    container_name: plenta-web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    env_file: .env
+    environment:
+      BASE_URL: http://backend:3001
+    ports:
+      - 4000:4000
+    command: "npm run start"
+    networks:
+      - plenta_net
+
+  plenta-store:
+    image: registry.gitlab.com/ronalmog/plenta-store-23:latest
+    container_name: plenta-store
+    restart: unless-stopped
+    depends_on:
+      - backend
+    env_file: .env
+    environment:
+      BASE_URL: http://backend:3001
+    ports:
+      - 4002:4002
+    command: "npm run start"
+    networks:
+      - plenta_net
+
+  plenta-admin:
+    image: registry.gitlab.com/ronalmog/plenta-admin-23:latest
+    container_name: plenta-admin
+    restart: unless-stopped
+    depends_on:
+      - backend
+    env_file: .env
+    environment:
+      BASE_URL: http://backend:3001
+    ports:
+      - 4001:4001
+    command: "npm run start"
+    networks:
+      - plenta_net
+
+networks:
+  plenta_net:
+    driver: bridge
