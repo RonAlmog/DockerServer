@@ -8,5 +8,8 @@ services:
       - .env
     ports:
       - 3000:3000
-    networks:
-      - default
+
+networks:
+  default:
+    external: true
+    name: mynetwork

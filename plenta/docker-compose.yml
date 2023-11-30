@@ -1,4 +1,4 @@
-ersion: "3.7"
+version: "3.8"
 services:
   backend:
     image: registry.gitlab.com/ronalmog/plenta-api-23:latest
@@ -12,6 +12,7 @@ services:
       - 3001:3000
       - 27017:27017
     networks:
+      - default
       - plenta_net
 
   plenta-web:
@@ -27,6 +28,7 @@ services:
       - 4000:4000
     command: "npm run start"
     networks:
+      - default
       - plenta_net
 
   plenta-store:
@@ -42,6 +44,7 @@ services:
       - 4002:4002
     command: "npm run start"
     networks:
+      - default
       - plenta_net
 
   plenta-admin:
@@ -57,8 +60,12 @@ services:
       - 4001:4001
     command: "npm run start"
     networks:
+      - default
       - plenta_net
 
 networks:
+  default:
+    external: true
+    name: mynetwork
   plenta_net:
     driver: bridge

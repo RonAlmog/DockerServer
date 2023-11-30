@@ -31,3 +31,8 @@ volumes:
   portainer_data:
   proxy_data:
   proxy_letsencrypt:
+
+networks:
+  default:
+    external: true
+    name: mynetwork
